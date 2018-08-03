@@ -24,14 +24,21 @@ router.get('/api/courses/:id', function (req,res,next) {
       }
   })
 });
-  //get all courses 
+  //get all courses id and title filelds
 router.get('/api/courses/', function (req,res,next) {
+
   Course.find()
    .exec(function (error,courses) {
      if (error){
        return next(error);
      } else {
-       return res.send(courses.title)
+      const courseDetail = courses.map(function (key) {
+        return {
+          id : key.id,
+          title : key.title
+        }
+      })
+      return res.json(courseDetail)
     }
   })
 });

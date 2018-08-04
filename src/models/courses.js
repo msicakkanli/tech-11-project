@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
-const CourseSchema = new mongoose.Schema({
-    user_id: {
-        type: String,
-    },
+const Review = require('./review');
+const User = require('./users');
+
+const courseSchema = new mongoose.Schema({
+    user:[ {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     title : {
         type: String,
-        required: true
+        required: [true, 'Title is required.']
     },
     description: {
         type: String,
-        required:true
+        required: [true, 'Description is required.']
     },
     estimatedTime: {
         type: String,
@@ -19,9 +23,8 @@ const CourseSchema = new mongoose.Schema({
     },
     reviews : [
         {
-            id : {
-                type : String
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
         }
     ],
     steps :[
@@ -34,16 +37,17 @@ const CourseSchema = new mongoose.Schema({
            },
            title : {
                type: String,
-               required: true
+               required: [true, 'Step title is required.']
            },
            description :{
                type: String,
-               required:true
+               required:[true, 'Step description is required.']
            }
         }
     ]
-
 });
 
-const Course = mongoose.model('courses', CourseSchema);
+
+
+const Course = mongoose.model('Course', courseSchema);
 module.exports = Course;

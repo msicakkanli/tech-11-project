@@ -18,40 +18,35 @@ router.get('/users', function (req,res,next) {
   })
 });
 // add user
-router.post('/users',function (req,res,next) {
- 
-        if (req.body.password !== req.body.confirmPassword){
-          var err = new Error('Passwords do not match.');
-          err.status = 400;
+router.post('/users', function(req, res, next){
+  User.findOne({emailAddress: req.body.emailAddress})
+      .exec(function(err, user){
+        if(err) next(err)
+        if(user){
+          const err = new Error('User already exists.');
+          err.status = 401;
           return next(err);
+        } else{
+          const user = new User(req.body);
+          user.save(function(err, user){
+            if(err) return next(err)
+            res.status(201);
+            res.location('/');
+            res.end();
+          })
         }
-
-        User.authenticate(req.body.password, req.body.emailAddress, function (error, user) {
-          if (error || !user) {
-            let err = new Error ('Wrong email or password')
-            err.status = 401 
-            return next(err)
-          } else {
-            req.session.userId = user._id
-            return res.send('user authenticate')
-          }
-        })
-
-        let userData = {
-          fullName : req.body.fullName,
-          emailAddress : req.body.emailAddress,
-          password: req.body.password
-        };
-        User.create(userData, function (err,user) {
-          if (err) {
-            const err = new Error('The email adress is already exist')
-            err.status = 401
-            return next(err)
-          }else {
-            return res.json(user);
-          }
-        })
+      })
+});
 
 
-})
+        // User.authenticate(req.body.emailAddress,req.body.password, function (error, user) {
+        //   if (error || !user) {
+        //     let err = new Error ('Wrong email or password')
+        //     err.status = 401 
+        //     return next(err)
+        //   } else {
+        //     req.session.userId = user._id
+        //     return res.send('user authenticate')
+        //   }
+        // })
   module.exports = router;

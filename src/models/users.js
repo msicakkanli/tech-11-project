@@ -25,7 +25,7 @@ userSchema.statics.authenticate = function (emailAddress, password, callback) {
             return callback(error)
         } else if (!user)  {
             let err = new Error('User not found!')
-            err.status = 401;
+            err.status = 400;
             return callback (err);
         }
         bycrpt.compare(password, user.password, function (error, result) {

@@ -17,6 +17,7 @@ router.get('/courses/:id', function (req,res,next) {
       }
   })
 });
+
   //get all courses id and title filelds
 router.get('/courses/', function (req,res,next) {
   Course.find()
@@ -35,5 +36,32 @@ router.get('/courses/', function (req,res,next) {
   })
 });
 
+//create course 
+router.post('/courses', function(req, res, next) {
+  const course = new Course(req.body);
+  //console.log(course)
+  course.save(function(err, course) {
+    if(err) return res.json(err);
+    res.status(201);
+    res.location('/courses').json();
+  });
+});
+
+//update course by ID
+router.put('/courses/:id', function (req,res,put) {
+  var id = req.params.id
+  var update = req.body
+  Course.findByIdAndUpdate(id, update, function (err, updatedDoc) {
+    if (err) {
+      const err= new Error("Course doesn't exist")
+      err.status=401;
+      return next(err)
+    } else {
+      res.status(204);
+      res.location('/');
+      res.end();
+    }
+  } )
+})
 
   module.exports = router;

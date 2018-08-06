@@ -3,10 +3,7 @@ const Review = require('./review');
 const User = require('./users');
 
 const courseSchema = new mongoose.Schema({
-    user:[ {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
+
     title : {
         type: String,
         required: [true, 'Title is required.']
@@ -21,6 +18,10 @@ const courseSchema = new mongoose.Schema({
     materialsNeeded: {
         type: String
     },
+    user:[ {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     reviews : [
         {
             type: mongoose.Schema.Types.ObjectId,

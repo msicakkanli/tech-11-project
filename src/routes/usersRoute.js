@@ -17,6 +17,7 @@ router.get('/users', function (req,res,next) {
     }
   })
 });
+
 // add user
 router.post('/users', function(req, res, next){
   User.findOne({emailAddress: req.body.emailAddress})
@@ -39,14 +40,4 @@ router.post('/users', function(req, res, next){
 });
 
 
-        // User.authenticate(req.body.emailAddress,req.body.password, function (error, user) {
-        //   if (error || !user) {
-        //     let err = new Error ('Wrong email or password')
-        //     err.status = 401 
-        //     return next(err)
-        //   } else {
-        //     req.session.userId = user._id
-        //     return res.send('user authenticate')
-        //   }
-        // })
   module.exports = router;

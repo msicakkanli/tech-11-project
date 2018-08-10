@@ -3,20 +3,24 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/users')
+const mid = require('../mid/index');
 
 
 
-// get users
-router.get('/users', function (req,res,next) {
-  User.find()
-   .exec(function (error,users) {
-     if (error){
-       return next(error);
-     } else {
-       return res.json(users)
-    }
-  })
+//get users
+router.get('/users', mid.authUser, function (req,res,next) {
+  res.status(200)
+  res.json(req.loggedInUser)
+  // User.find()
+  //  .exec(function (error,users) {
+  //    if (error){
+  //      return next(error);
+  //    } else {
+  //      return res.json(users)
+  //   }
+  // })
 });
+
 
 // add user
 router.post('/users', function(req, res, next){

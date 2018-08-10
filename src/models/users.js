@@ -18,12 +18,12 @@ const userSchema = new mongoose.Schema({
     }
 });
 //authenticate user data 
-userSchema.statics.authenticate = function (emailAddress, password, callback) {
-    User.findOne({ emailAddress : emailAddress})
+userSchema.statics.authenticate = function (email, password, callback) {
+    User.findOne({ emailAddress : email})
     .exec(function (error, user) {
         if (error) {
             return callback(error)
-        } else if (!user)  {
+        } else if ( !user )  {
             let err = new Error('User not found!')
             err.status = 400;
             return callback (err);
@@ -32,7 +32,8 @@ userSchema.statics.authenticate = function (emailAddress, password, callback) {
             if (result === true) {
                 return callback(null, user )
             } else {
-                return callback();
+               
+                return callback();    
             }
         })
     })

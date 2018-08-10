@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/courses')
+const Review = require('../models/review')
 
 
   // get course by Id
@@ -62,6 +63,27 @@ router.put('/courses/:id', function (req,res,put) {
       res.end();
     }
   } )
+});
+
+//post reviews to course
+router.post('/courses/:id/reviews', function(req, res, next){
+  const review = new Review(req.body);
+  review.save(function(err, review){
+    if(err) return next(err);
+    Course.findById(req.params.id , function (err, course) {
+      if (err){
+        return next(err);
+      } else {
+        course.reviews.push(review._id)
+        
+        course.save(function (err,course) {
+          if(err) return next(err);
+        })
+        res.status(201)
+        res.location('couses/:id').json()
+     }
+    })
+  })
 })
 
   module.exports = router;

@@ -3,7 +3,8 @@ const auth = require('basic-auth');
 
 function authUser(req,res,next) {
   const user = auth(req)
-  
+  console.log(user)
+  console.log(user.pass)
   if(user.name && user.pass){
     User.authenticate(user.name, user.pass, function (error, user) {
       if(error){

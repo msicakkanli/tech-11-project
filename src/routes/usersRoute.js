@@ -8,18 +8,25 @@ const mid = require('../mid/index');
 
 
 //get users
+// router.get('/users', mid.authUser, function (req,res,next) {
+//   User.find({emailAddress: req.body.emailAddress})
+//    .exec(function (error,users) {
+//      if (error){
+//        return next(error);
+//      } else {
+//        return res.json(req.loggedInUser)
+//        res.status(200)
+//     }
+//   })
+// });
+
 router.get('/users', mid.authUser, function (req,res,next) {
-  res.status(200)
-  res.json(req.loggedInUser)
-  // User.find()
-  //  .exec(function (error,users) {
-  //    if (error){
-  //      return next(error);
-  //    } else {
-  //      return res.json(users)
-  //   }
-  // })
+res.json(req.loggedInUser)
+       res.status(200)
+
 });
+
+
 
 
 // add user

@@ -19,8 +19,10 @@ const userSchema = new mongoose.Schema({
 });
 //authenticate user data 
 userSchema.statics.authenticate = function (email, password, callback) {
+    console.log('kontrol user name and email')
     User.findOne({ emailAddress : email})
     .exec(function (error, user) {
+        console.log(user)
         if (error) {
             return callback(error)
         } else if ( !user )  {
@@ -30,10 +32,13 @@ userSchema.statics.authenticate = function (email, password, callback) {
         }
         bycrpt.compare(password, user.password, function (error, result) {
             if (result === true) {
+                console.log("password correct")
                 return callback(null, user )
             } else {
-               
-                return callback();    
+                console.log("password wrong")
+                let err = new Error('The password is wrong')
+                err.status = 401;
+                return callback(err);    
             }
         })
     })
@@ -52,4 +57,4 @@ userSchema.pre('save', function (next) {
 })
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = User
